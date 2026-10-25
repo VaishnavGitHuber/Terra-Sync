@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgriBot | Soil Intelligence</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+        <h2>🌱 TerraSync</h2>
+        <p class="muted">SMART AGRICULTURE</p>
+        <a href="/" style="background: #2c4835;">▦ Dashboard Overview</a>
+        <a href="/sensors">📋 Sensor Data Table</a>
+        <a href="#overview">▦ Overview</a>
+        <a href="#controls">⌘ Robot Control</a>
+        <a href="#map">⌖ Field Map</a>
+        <a href="#soil">♧ Soil Analytics</a>
+        <a href="#sensors">◉ Onboard Sensors</a>
+        <div class="sim">● SIMULATION MODE</div>
+    </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div><div class="eyebrow">FIELD OPERATIONS / OVERVIEW</div><h1>Soil monitoring dashboard</h1></div>
+      <div class="top-actions"><span class="demo-pill">● SIMULATED DATA</span><button id="newSampleBtn" class="btn btn-green">＋ Generate sample</button></div>
+    </header>
+
+    <section class="welcome-panel" id="overview">
+      <div><div class="eyebrow light">AGRICULTURE · ROBOTICS · IOT</div><h2>Your field, at a glance.</h2>
+      <p>Explore example soil readings and sampling history. Values shown are dummy data for development—not real sensor measurements.</p></div>
+      <div class="field-art" aria-hidden="true"><div class="sun"></div><div class="hill hill-back"></div><div class="hill hill-front"></div><div class="crop-row">♧　♧　♧　♧　♧</div></div>
+    </section>
+
+    <div class="section-heading"><div><h3>Latest measurements</h3><p>Most recent demo sample · illustrative units</p></div><span id="lastUpdated" class="muted small"></span></div>
+    <section class="metric-grid" id="readings">
+      <article class="metric-card"><div class="metric-top"><span>Soil moisture</span><span class="metric-icon blue">≈</span></div><div class="metric-value"><span id="moisture">—</span><small>%</small></div><div class="metric-foot">KWS-800 · demo value</div><div class="mini-track"><span id="moistureBar" style="width:0%"></span></div></article>
+      <article class="metric-card"><div class="metric-top"><span>Soil temperature</span><span class="metric-icon orange">⌁</span></div><div class="metric-value"><span id="temperature">—</span><small>°C</small></div><div class="metric-foot">KWS-800 · demo value</div><div class="metric-foot muted">Check actual sensor capabilities</div></article>
+      <article class="metric-card"><div class="metric-top"><span>Nitrogen (N)</span><span class="metric-icon green">N</span></div><div class="metric-value"><span id="nitrogen">—</span><small class="unit">demo units</small></div><div class="metric-foot">NPK probe · uncalibrated demo</div></article>
+      <article class="metric-card"><div class="metric-top"><span>Phosphorus (P)</span><span class="metric-icon purple">P</span></div><div class="metric-value"><span id="phosphorus">—</span><small class="unit">demo units</small></div><div class="metric-foot">NPK probe · uncalibrated demo</div></article>
+      <article class="metric-card"><div class="metric-top"><span>Potassium (K)</span><span class="metric-icon yellow">K</span></div><div class="metric-value"><span id="potassium">—</span><small class="unit">demo units</small></div><div class="metric-foot">NPK probe · uncalibrated demo</div></article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel chart-panel">
+        <div class="panel-heading"><div><h3>Soil readings over time</h3><p>Example moisture and temperature readings</p></div><span class="tiny-tag">DEMO</span></div>
+        <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+      </article>
+      <article class="panel status-panel">
+        <div class="panel-heading"><div><h3>Robot status</h3><p>Simulated system status</p></div><span class="status-dot"></span></div>
+        <div class="robot-placeholder"><div class="robot-emoji">🤖</div><div><strong id="robotState">Standby</strong><small>AgriBot Demo</small></div></div>
+        <div class="status-row"><span>Connection</span><strong class="text-green">Simulated</strong></div>
+        <div class="status-row"><span>Battery</span><strong id="battery">87%</strong></div>
+        <div class="battery-track"><span></span></div>
+        <div class="status-row"><span>Mission</span><strong>Ready</strong></div>
+        <div class="status-row"><span>Physical robot</span><strong>Not connected</strong></div>
+      </article>
+    </section>
+
+    <section class="panel history-panel" id="history">
+      <div class="panel-heading"><div><h3>Recent sample history</h3><p>Saved in local SQLite database</p></div><button id="refreshBtn" class="btn btn-outline-secondary btn-sm">↻ Refresh</button></div>
+      <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Sample ID</th><th>Time</th><th>Moisture</th><th>Temperature</th><th>N</th><th>P</th><th>K</th><th>Source</th></tr></thead><tbody id="historyRows"><tr><td colspan="8">Loading samples…</td></tr></tbody></table></div>
+      <div class="table-footer"><span id="sampleCount">— samples</span><span>Demo values are not suitable for agronomic decisions.</span></div>
+    </section>
+    <footer>AgriBot prototype · Built with Python Flask · Dummy data only</footer>
+  </main>
+</div>
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>

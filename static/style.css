@@ -1,0 +1,86 @@
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #24352a;
+    background: #f3f6f2;
+}
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+    width: 225px; background: #172a20; color: white;
+    padding: 25px 16px; flex-shrink: 0;
+}
+.sidebar h2 { color: #a6e3a9; }
+.sidebar a {
+    display: block; color: #d7e5d9; text-decoration: none;
+    padding: 14px 10px; border-radius: 7px; margin: 5px 0;
+}
+.sidebar a:hover { background: #2c4835; }
+.muted { color: #89978c; font-size: 12px; }
+.sim { margin-top: 35px; color: #7ee29b; font-size: 11px; }
+main { flex: 1; min-width: 0; padding: 28px; }
+header { display: flex; justify-content: space-between; gap: 15px; align-items: center; margin-bottom: 24px; }
+header h1 { margin-bottom: 8px; }
+.live { color: #268345; background: #e0f4e4; padding: 10px 14px; border-radius: 25px; font-size: 11px; }
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 18px; }
+.card, .panel { background: white; border: 1px solid #e4ebe3; border-radius: 12px; padding: 19px; box-shadow: 0 3px 12px #243b2510; }
+.card p { font-size: 11px; color: #849087; }
+.card h2 { font-size: 25px; }
+.columns { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+.panel h2 { margin-top: 0; }
+.panel h3 { font-size: 14px; margin-top: 22px; }
+.robot { font-size: 65px; text-align: center; padding: 12px; background: #edf5e9; border-radius: 10px; margin: 15px 0; }
+.buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+button { border: 0; border-radius: 7px; background: #32854a; color: white; padding: 11px 9px; cursor: pointer; font-weight: 600; margin: 3px 0; }
+button:hover { filter: brightness(.94); }
+button:disabled { background: #dce7dc; color: #598061; }
+.danger { background: #c84236; width: 100%; margin-top: 12px; }
+.warning { font-size: 10px; color: #ad766d; text-align: center; }
+.dpad { display: grid; grid-template-columns: repeat(3, 42px); gap: 5px; justify-content: center; }
+.field-map {
+    height: 290px; position: relative; overflow: hidden; border-radius: 10px;
+    background: repeating-linear-gradient(0deg, #c5e0b4 0 17px, #e0efce 17px 26px);
+    border: 2px solid #b7d1a6;
+}
+.plot { position: absolute; padding: 8px; background: #5d9d4c30; border: 1px dashed #669a59; font-size: 11px; color: #3e7037; }
+.plot1 { top: 15%; left: 7%; width: 40%; height: 33%; }
+.plot2 { top: 15%; right: 7%; width: 38%; height: 33%; }
+.plot3 { bottom: 9%; left: 15%; width: 70%; height: 30%; }
+.route { position: absolute; top: 48%; left: 12%; width: 75%; border-top: 3px dashed #33864b; transform: rotate(-8deg); }
+.map-robot { 
+    position: absolute; 
+    top: 44%; 
+    left: 45%; 
+    font-size: 26px; 
+    transition: left 2s linear, top 2s linear; /* Smooth slow transition */
+}
+.waypoint { position: absolute; background: #fff; border: 2px solid #32854a; border-radius: 50%; width: 25px; height: 25px; text-align: center; padding-top: 3px; font-size: 11px; }
+.w1 { top: 40%; left: 10%; }.w2 { top: 35%; right: 10%; }.w3 { bottom: 12%; right: 15%; }
+.gps { display: flex; gap: 15px; flex-wrap: wrap; font-size: 11px; }
+.bar { height: 8px; background: #e9eee8; border-radius: 10px; overflow: hidden; }
+.bar div { height: 100%; width: 42%; background: #399052; transition: width .5s; }
+.sensor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sensor { background: #f4f8f2; border-radius: 8px; padding: 13px; }
+.sensor span { display: block; font-size: 11px; color: #859187; margin-bottom: 7px; }
+.sensor b { font-size: 18px; }
+.sensor-row { display: flex; justify-content: space-between; gap: 10px; padding: 15px 0; border-bottom: 1px solid #edf0ec; font-size: 12px; }
+.sensor-row b { color: #36834b; font-size: 11px; text-align: right; }
+canvas { max-height: 180px; }
+footer { text-align: center; color: #9aa49b; font-size: 11px; padding: 15px; }
+@media (max-width: 950px) {
+    .sidebar { width: 175px; }
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .columns { grid-template-columns: 1fr; }
+    main { padding: 18px; }
+}
+@media (max-width: 600px) {
+    .sidebar { width: 62px; padding: 12px 5px; overflow: hidden; }
+    .sidebar h2 { font-size: 12px; writing-mode: vertical-rl; }
+    .sidebar a { font-size: 0; text-align: center; }
+    .sidebar a:first-letter { font-size: 18px; }
+    .sim { font-size: 0; }
+    header { display: block; }
+    .cards { gap: 8px; }
+    .card, .panel { padding: 13px; }
+    .card h2 { font-size: 20px; }
+}

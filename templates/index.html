@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TerraSync | AgriBot Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Chatbot Widget Styles */
+        .chat-widget {
+            background: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            height: 380px;
+            overflow: hidden;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            background: #f9fbf9;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .chat-bubble {
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+        .chat-bubble.bot {
+            background: #e2ede5;
+            color: #1b3823;
+            align-self: flex-start;
+        }
+        .chat-bubble.user {
+            background: #2c4835;
+            color: #ffffff;
+            align-self: flex-end;
+        }
+        .chat-input-area {
+            display: flex;
+            border-top: 1px solid #e0e0e0;
+            padding: 8px;
+            background: #ffffff;
+        }
+        .chat-input-area input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+        .chat-input-area button {
+            margin-left: 6px;
+            padding: 8px 14px;
+            background: #2c4835;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        /* Camera Feed Simulation */
+        .camera-viewport {
+            background: #111;
+            border-radius: 6px;
+            height: 180px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4ef06a;
+            font-family: monospace;
+            overflow: hidden;
+            border: 1px solid #2c4835;
+        }
+        .camera-overlay-box {
+            position: absolute;
+            border: 2px dashed #4ef06a;
+            width: 50%;
+            height: 60%;
+            top: 20%;
+            left: 25%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 4px;
+            font-size: 0.75rem;
+            background: rgba(78, 240, 106, 0.05);
+        }
+        /* Alerts & Recommendations list */
+        .alert-item {
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            border-left: 4px solid #f0a52b;
+            background: #fdf8f0;
+        }
+        .alert-item.info {
+            border-left-color: #2c4835;
+            background: #f2f7f3;
+        }
+        .rec-item {
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            padding-left: 15px;
+            position: relative;
+        }
+        .rec-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #2c4835;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar">
+        <h2>🌱 TerraSync</h2>
+        <p class="muted">SMART AGRICULTURE</p>
+        <a href="/" style="background: #2c4835;">▦ Dashboard Overview</a>
+        <a href="/soil-water">💧 Soil & Water Analytics</a>
+        <a href="/sensors">📋 Sensor Data Table</a>
+        <a href="/analytics">📊 Analytics & Diagrams</a>
+        <a href="#controls">⌘ Robot Control</a>
+        <a href="#map">⌖ Field Map</a>
+        <a href="#camera">📷 Camera Insights</a>
+        <a href="#alerts">⚡ Alerts & Recommendations</a>
+        <div class="sim">● SIMULATION MODE</div>
+    </aside>
+
+    <main>
+        <header>
+            <div>
+                <p class="muted">FARM OPERATIONS / OVERVIEW</p>
+                <h1>AgriBot Monitoring Dashboard</h1>
+                <p class="muted">Live simulated robot telemetry, AI vision, and field control</p>
+            </div>
+            <span class="live">● LIVE DEMO</span>
+        </header>
+
+        <section class="cards" id="overview">
+            <article class="card">
+                <p>ROBOT STATUS</p><h2 id="status">Ready</h2>
+            </article>
+            <article class="card">
+                <p>BATTERY</p><h2><span id="battery">86</span>%</h2>
+            </article>
+            <article class="card">
+                <p>FIELD COVERAGE</p><h2><span id="coverage">42</span>%</h2>
+            </article>
+            <article class="card">
+                <p>WIRELESS SIGNAL</p><h2><span id="signal">98</span>%</h2>
+            </article>
+        </section>
+
+        <!-- Soil & Water Analytics have been removed from the main page per requirements and moved to /soil-water -->
+
+        <section class="columns">
+            <article class="panel" id="controls">
+                <h2>🤖 Robot Control</h2>
+                <p class="muted">AgriBot TS-04 · Simulated controls</p>
+
+                <div class="robot">🤖</div>
+                <div class="buttons">
+                    <button onclick="command('start')">▶ Start Mission</button>
+                    <button onclick="command('pause')">Ⅱ Pause</button>
+                    <button onclick="command('stop')">■ Stop</button>
+                    <button onclick="command('return')">↩ Return to Base</button>
+                </div>
+
+                <h3>Manual Movement</h3>
+                <div class="dpad">
+                    <span></span><button onclick="command('forward')">↑</button><span></span>
+                    <button onclick="command('left')">←</button>
+                    <button disabled>●</button>
+                    <button onclick="command('right')">→</button>
+                    <span></span><button onclick="command('backward')">↓</button><span></span>
+                </div>
+
+                <button class="danger" onclick="command('emergency')">
+                    ⛔ Emergency Stop (Demo)
+                </button>
+                <button onclick="command('reset')">Reset Emergency Stop</button>
+                <p class="warning">Controls are simulated. No real robot is connected.</p>
+            </article>
+
+            <article class="panel" id="map">
+                <h2>🗺 Field Map</h2>
+                <p class="muted">North Field · Plot A-07</p>
+                <div class="field-map">
+                    <div class="plot plot1">PLOT A</div>
+                    <div class="plot plot2">PLOT B</div>
+                    <div class="plot plot3">PLOT C</div>
+                    <div class="map-robot" id="mapRobot">🤖</div>
+                </div>
+                <div class="gps">
+                    <p>Latitude: <b id="lat">25.03300</b></p>
+                    <p>Longitude: <b id="lon">121.56540</b></p>
+                </div>
+                <h3>Mission Coverage</h3>
+                <div class="bar"><div id="coverageBar"></div></div>
+                <p class="muted">Illustrative map — not a real GPS map.</p>
+            </article>
+        </section>
+
+        <!-- Task 4: Camera & AI Insights Section -->
+        <section class="columns">
+            <article class="panel" id="camera">
+                <h2>📷 Camera & AI Crop Insights</h2>
+                <p class="muted">Real-time onboard computer vision stream & disease detection</p>
+                
+                <div class="camera-viewport" style="margin-top: 15px;">
+                    <div style="position: absolute; top: 8px; left: 10px; font-size: 0.8rem; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px;">REC ● LIVE (30 FPS)</div>
+                    <div class="camera-overlay-box">
+                        <span>[ROI: TOMATO_CANOPY]</span>
+                        <span id="aiConf">Confidence: 96.4%</span>
+                    </div>
+                    <div style="font-size: 1.1rem; opacity: 0.8;">🌱 [ Simulated Optical Feed ]</div>
+                </div>
+
+                <div class="sensor-grid" style="margin-top: 15px;">
+                    <div class="sensor"><span>Detected Crop</span><b id="detectedCrop">Tomato (Healthy)</b></div>
+                    <div class="sensor"><span>Pest Status</span><b id="pestStatus" style="color: #2e8b57;">None Detected</b></div>
+                    <div class="sensor"><span>Leaf Health Index</span><b id="leafHealth">92%</b></div>
+                    <div class="sensor"><span>Snapshot ID</span><b id="snapshotId">CAM_IMG_1042</b></div>
+                </div>
+            </article>
+
+            <!-- Task 5: Recommendations and Alerts Section -->
+            <article class="panel" id="alerts">
+                <h2>⚡ Recommendations & Alerts</h2>
+                <p class="muted">Actionable AI agronomic advice and system notifications</p>
+                
+                <h3 style="margin-top: 15px;">System Alerts</h3>
+                <div id="alertsContainer">
+                    <div class="alert-item info">
+                        <b>[INFO]</b> Optimal soil nitrogen levels detected across Plot A.
+                    </div>
+                    <div class="alert-item">
+                        <b>[WARNING]</b> Slight moisture drop in Plot B. Consider scheduled irrigation.
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 20px;">Agronomic Recommendations</h3>
+                <div id="recommendationsContainer">
+                    <div class="rec-item">Apply potassium-rich foliar spray in Plot C within 48 hours.</div>
+                    <div class="rec-item">Maintain current robot patrol speed for optimal camera focus and depth capture.</div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Task 1: Chatbot Section -->
+        <section class="columns">
+            <article class="panel" style="grid-column: span 2;" id="chatbot">
+                <h2>💬 AgriBot Assistant Chat</h2>
+                <p class="muted">Ask questions about robot telemetry, soil conditions, water analytics, or crop health</p>
+                
+                <div class="chat-widget" style="margin-top: 15px;">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="chat-bubble bot">Hello! I am your TerraSync AgriBot Assistant. How can I help you monitor the fields today?</div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chatInput" placeholder="Ask e.g. What is the battery level? or How is the soil moisture?" onkeypress="handleChatKey(event)">
+                        <button onclick="sendChatMessage()">Send</button>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <footer>TerraSync · Smart Agriculture · All telemetry is simulated</footer>
+    </main>
+</div>
+
+<script src="/static/app.js"></script>
+<script>
+    // Chatbot UI Handler
+    async function sendChatMessage() {
+        const input = document.getElementById("chatInput");
+        const messagesDiv = document.getElementById("chatMessages");
+        const query = input.value.trim();
+        if (!query) return;
+
+        // Append user message
+        const userBubble = document.createElement("div");
+        userBubble.className = "chat-bubble user";
+        userBubble.textContent = query;
+        messagesDiv.appendChild(userBubble);
+        input.value = "";
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: query })
+            });
+            const data = await response.json();
+
+            const botBubble = document.createElement("div");
+            botBubble.className = "chat-bubble bot";
+            botBubble.textContent = data.reply;
+            messagesDiv.appendChild(botBubble);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        } catch (err) {
+            console.error("Chat error:", err);
+        }
+    }
+
+    function handleChatKey(e) {
+        if (e.key === "Enter") {
+            sendChatMessage();
+        }
+    }
+</script>
+</body>
+</html>

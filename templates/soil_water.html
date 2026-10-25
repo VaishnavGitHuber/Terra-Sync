@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TerraSync | Soil & Water Analytics</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar">
+        <h2>🌱 TerraSync</h2>
+        <p class="muted">SMART AGRICULTURE</p>
+        <a href="/">▦ Dashboard Overview</a>
+        <a href="/soil-water" style="background: #2c4835;">💧 Soil & Water Analytics</a>
+        <a href="/sensors">📋 Sensor Data Table</a>
+        <a href="/analytics">📊 Analytics & Diagrams</a>
+        <div class="sim">● SIMULATION MODE</div>
+    </aside>
+
+    <main>
+        <header>
+            <div>
+                <p class="muted">TELEMETRY / SOIL & WATER</p>
+                <h1>Soil & Water Analytics Section</h1>
+                <p class="muted">Detailed sensor array monitoring for soil composition and irrigation fluid quality</p>
+            </div>
+            <span class="live">● LIVE DEMO</span>
+        </header>
+
+        <section class="columns">
+            <article class="panel">
+                <h2>🌿 Soil Analytics Breakdown</h2>
+                <div class="sensor-grid" style="margin-top: 15px;">
+                    <div class="sensor"><span>Moisture</span><b id="soilMoisture">42%</b></div>
+                    <div class="sensor"><span>Soil pH</span><b id="ph">6.8</b></div>
+                    <div class="sensor"><span>Temperature</span><b id="temp">24.6 °C</b></div>
+                    <div class="sensor"><span>Nitrogen</span><b id="nitrogen">38 mg/kg</b></div>
+                    <div class="sensor"><span>Phosphorus</span><b id="phosphorus">24 mg/kg</b></div>
+                    <div class="sensor"><span>Potassium</span><b id="potassium">31 mg/kg</b></div>
+                </div>
+                <h3>Soil Moisture Trend History</h3>
+                <canvas id="soilChart" style="margin-top: 15px;"></canvas>
+            </article>
+
+            <article class="panel">
+                <h2>💧 Water Quality Analytics</h2>
+                <p class="muted">Real-time aquatic & irrigation fluid sensor array</p>
+                <div class="sensor-grid" style="margin-top: 20px;">
+                    <div class="sensor">
+                        <span>KWS Sensor (EC / TDS)</span>
+                        <b id="kwsSensor">450.0 ppm</b>
+                    </div>
+                    <div class="sensor">
+                        <span>NPLK Sensor (Nutrient Index)</span>
+                        <b id="nplkSensor">12.4 mg/L</b>
+                    </div>
+                </div>
+                <div class="sensor-row" style="margin-top: 25px;">
+                    <span>Water Fluid Status</span>
+                    <b style="color: #268345;">● Optimal Range</b>
+                </div>
+                <div class="sensor-row">
+                    <span>Calibration State</span>
+                    <b>Calibrated (v2.4)</b>
+                </div>
+                <div class="sensor-row">
+                    <span>Irrigation Valve Status</span>
+                    <b>Automated (Active)</b>
+                </div>
+                <div class="sensor-row">
+                    <span>Salinity Index</span>
+                    <b>Normal (0.4 mS/cm)</b>
+                </div>
+            </article>
+        </section>
+
+        <footer>TerraSync · Smart Agriculture · All telemetry is simulated</footer>
+    </main>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

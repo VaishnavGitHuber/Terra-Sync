@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TerraSync | Analytics & Sensor Diagrams</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+        .chart-card {
+            background: white;
+            border: 1px solid #e4ebe3;
+            border-radius: 12px;
+            padding: 19px;
+            box-shadow: 0 3px 12px #243b2510;
+        }
+        .chart-card h3 {
+            margin-top: 0;
+            font-size: 15px;
+            color: #24352a;
+        }
+        .chart-container {
+            position: relative;
+            height: 240px;
+            width: 100%;
+        }
+        @media (max-width: 950px) {
+            .analytics-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar">
+        <h2>🌱 TerraSync</h2>
+        <p class="muted">SMART AGRICULTURE</p>
+        <a href="/" style="background: #2c4835;">▦ Dashboard Overview</a>
+        <a href="/sensors">📋 Sensor Data Table</a>
+        <a href="#overview">▦ Overview</a>
+        <a href="/analytics">📊 Analytics & Diagrams</a>
+        <a href="#controls">⌘ Robot Control</a>
+        <a href="#map">⌖ Field Map</a>
+        <a href="#soil">♧ Soil Analytics</a>
+        <a href="#sensors">◉ Onboard Sensors</a>
+        <div class="sim">● SIMULATION MODE</div>
+    </aside>
+
+    <main>
+        <header>
+            <div>
+                <p class="muted">DIAGNOSTICS / STATISTICAL DIAGRAMS</p>
+                <h1>Sensor Analytics & Statistical Diagrams</h1>
+                <p class="muted">Visual distribution and comparative diagrams for soil, water quality, and hardware metrics</p>
+            </div>
+            <span class="live">● LIVE STATS</span>
+        </header>
+
+        <!-- Top summary cards -->
+        <section class="cards">
+            <article class="card">
+                <p>KWS WATER EC</p><h2><span id="stat-kws">450</span> <span style="font-size:14px;">ppm</span></h2>
+            </article>
+            <article class="card">
+                <p>NPLK NUTRIENT</p><h2><span id="stat-nplk">12.4</span> <span style="font-size:14px;">mg/L</span></h2>
+            </article>
+            <article class="card">
+                <p>SOIL pH LEVEL</p><h2 id="stat-ph">6.80</h2>
+            </article>
+            <article class="card">
+                <p>BATTERY HEALTH</p><h2><span id="stat-batt">86</span>%</h2>
+            </article>
+        </section>
+
+        <!-- Graphical Diagrams Grid -->
+        <section class="analytics-grid">
+            <!-- Diagram 1: Soil Nutrients Bar Chart -->
+            <article class="chart-card">
+                <h3>🧪 Soil Nutrient Composition (NPK)</h3>
+                <p class="muted">Nitrogen, Phosphorus, and Potassium balance</p>
+                <div class="chart-container">
+                    <canvas id="npkBarChart"></canvas>
+                </div>
+            </article>
+
+            <!-- Diagram 2: Water Quality Metrics Doughnut Chart -->
+            <article class="chart-card">
+                <h3>💧 Water Quality Index (KWS & NPLK)</h3>
+                <p class="muted">Electrical Conductivity and Ion Concentration ratio</p>
+                <div class="chart-container">
+                    <canvas id="waterQualityDoughnut"></canvas>
+                </div>
+            </article>
+        </section>
+
+        <section class="analytics-grid">
+            <!-- Diagram 3: Environmental Conditions -->
+            <article class="chart-card">
+                <h3>🌡 Soil & Environmental Parameters</h3>
+                <p class="muted">Moisture percentage vs Temperature (°C)</p>
+                <div class="chart-container">
+                    <canvas id="envBarChart"></canvas>
+                </div>
+            </article>
+
+            <!-- Diagram 4: System Health Metrics -->
+            <article class="chart-card">
+                <h3>⚡ System & Motor Telemetry</h3>
+                <p class="muted">Motor temperature, signal strength, and battery</p>
+                <div class="chart-container">
+                    <canvas id="systemRadarChart"></canvas>
+                </div>
+            </article>
+        </section>
+
+        <footer>TerraSync · Smart Agriculture · All telemetry is simulated</footer>
+    </main>
+</div>
+
+<script>
+    let npkChart, waterChart, envChart, systemChart;
+
+    function initCharts() {
+        // NPK Bar Chart
+        const npkCtx = document.getElementById("npkBarChart").getContext("2d");
+        npkChart = new Chart(npkCtx, {
+            type: "bar",
+            data: {
+                labels: ["Nitrogen (N)", "Phosphorus (P)", "Potassium (K)"],
+                datasets: [{
+                    label: "mg/kg",
+                    data: [38, 24, 31],
+                    backgroundColor: ["#32854a", "#4b9ac7", "#f0a52b"],
+                    borderRadius: 6
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+
+        // Water Quality Doughnut Chart
+        const waterCtx = document.getElementById("waterQualityDoughnut").getContext("2d");
+        waterChart = new Chart(waterCtx, {
+            type: "doughnut",
+            data: {
+                labels: ["KWS (TDS ppm)", "NPLK (Nutrient mg/L)"],
+                datasets: [{
+                    data: [450, 12.4],
+                    backgroundColor: ["#399052", "#5d9d4c"]
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        // Environmental Bar Chart
+        const envCtx = document.getElementById("envBarChart").getContext("2d");
+        envChart = new Chart(envCtx, {
+            type: "bar",
+            data: {
+                labels: ["Moisture (%)", "Temperature (°C)", "Soil pH (x10)"],
+                datasets: [{
+                    label: "Value",
+                    data: [42, 24.6, 68],
+                    backgroundColor: ["#3c9655", "#c84236", "#4b9ac7"],
+                    borderRadius: 6
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+
+        // System Health Radar Chart
+        const systemCtx = document.getElementById("systemRadarChart").getContext("2d");
+        systemChart = new Chart(systemCtx, {
+            type: "radar",
+            data: {
+                labels: ["Battery (%)", "Signal (%)", "Motor Temp (°C)", "Speed (x10 m/s)"],
+                datasets: [{
+                    label: "Telemetry Index",
+                    data: [86, 98, 39.2, 5],
+                    backgroundColor: "#32854a20",
+                    borderColor: "#32854a",
+                    pointBackgroundColor: "#32854a"
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    }
+
+    async function updateAnalyticsData() {
+        try {
+            const response = await fetch("/api/data", { cache: "no-store" });
+            if (!response.ok) return;
+            const d = await response.json();
+
+            // Update header stat cards
+            document.getElementById("stat-kws").textContent = d.kws_sensor;
+            document.getElementById("stat-nplk").textContent = d.nplk_sensor;
+            document.getElementById("stat-ph").textContent = d.soil_ph;
+            document.getElementById("stat-batt").textContent = Math.round(d.battery);
+
+            // Update NPK Chart
+            if (npkChart) {
+                npkChart.data.datasets[0].data = [d.nitrogen, d.phosphorus, d.potassium];
+                npkChart.update("none");
+            }
+
+            // Update Water Quality Doughnut
+            if (waterChart) {
+                waterChart.data.datasets[0].data = [d.kws_sensor, d.nplk_sensor * 10];
+                waterChart.update("none");
+            }
+
+            // Update Environmental Chart
+            if (envChart) {
+                envChart.data.datasets[0].data = [d.soil_moisture, d.soil_temp, d.soil_ph * 10];
+                envChart.update("none");
+            }
+
+            // Update System Radar Chart
+            if (systemChart) {
+                systemChart.data.datasets[0].data = [d.battery, d.signal, d.motor_temp, d.speed * 10];
+                systemChart.update("none");
+            }
+        } catch (error) {
+            console.error("Analytics telemetry update failed:", error);
+        }
+    }
+
+    initCharts();
+    setInterval(updateAnalyticsData, 1000);
+</script>
+</body>
+</html>

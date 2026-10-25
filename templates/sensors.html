@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TerraSync | Sensor Data Table</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e4ebe3;
+            box-shadow: 0 3px 12px #243b2510;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13px;
+        }
+        th, td {
+            padding: 14px 18px;
+            border-bottom: 1px solid #edf0ec;
+        }
+        th {
+            background: #f4f8f2;
+            color: #24352a;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: #fafcf9;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #e0f4e4;
+            color: #268345;
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar">
+        <h2>🌱 TerraSync</h2>
+        <p class="muted">SMART AGRICULTURE</p>
+        <a href="/" style="background: #2c4835;">▦ Dashboard Overview</a>
+        <a href="/sensors">📋 Sensor Data Table</a>
+        <a href="#overview">▦ Overview</a>
+        <a href="/analytics">📊 Analytics & Diagrams</a>
+        <a href="#controls">⌘ Robot Control</a>
+        <a href="#map">⌖ Field Map</a>
+        <a href="#soil">♧ Soil Analytics</a>
+        <a href="#sensors">◉ Onboard Sensors</a>
+        <div class="sim">● SIMULATION MODE</div>
+    </aside>
+
+    <main>
+        <header>
+            <div>
+                <p class="muted">DIAGNOSTICS / SENSOR REGISTRY</p>
+                <h1>Live Telemetry & Sensor Data Table</h1>
+                <p class="muted">Complete live registry of all AgriBot TS-04 sensor parameters and demo metrics</p>
+            </div>
+            <span class="live">● LIVE FEED</span>
+        </header>
+
+        <section class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sensor / Parameter</th>
+                        <th>Category</th>
+                        <th>Current Value</th>
+                        <th>Operating Range / Units</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Soil Moisture</b></td>
+                        <td>Soil Analytics</td>
+                        <td><span id="t-moisture">--</span>%</td>
+                        <td>15.0% – 70.0%</td>
+                        <td><span class="badge">Optimal</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Soil pH</b></td>
+                        <td>Soil Analytics</td>
+                        <td id="t-ph">--</td>
+                        <td>5.50 – 8.00 pH</td>
+                        <td><span class="badge">Normal</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Soil Temperature</b></td>
+                        <td>Soil Analytics</td>
+                        <td id="t-temp">--</td>
+                        <td>Ambient (°C)</td>
+                        <td><span class="badge">Normal</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Soil Nitrogen (N)</b></td>
+                        <td>Nutrient Array</td>
+                        <td id="t-nitrogen">--</td>
+                        <td>mg/kg</td>
+                        <td><span class="badge">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Soil Phosphorus (P)</b></td>
+                        <td>Nutrient Array</td>
+                        <td id="t-phosphorus">--</td>
+                        <td>mg/kg</td>
+                        <td><span class="badge">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Soil Potassium (K)</b></td>
+                        <td>Nutrient Array</td>
+                        <td id="t-potassium">--</td>
+                        <td>mg/kg</td>
+                        <td><span class="badge">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>KWS Sensor (EC / TDS)</b></td>
+                        <td>Water Quality</td>
+                        <td id="t-kws">--</td>
+                        <td>100 – 1000 ppm</td>
+                        <td><span class="badge">Optimal</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>NPLK Sensor (Nutrient Index)</b></td>
+                        <td>Water Quality</td>
+                        <td id="t-nplk">--</td>
+                        <td>0 – 100 mg/L</td>
+                        <td><span class="badge">Optimal</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Robot Speed</b></td>
+                        <td>Drive System</td>
+                        <td id="t-speed">--</td>
+                        <td>m/s</td>
+                        <td><span class="badge" id="t-status-badge">Ready</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Motor Temperature</b></td>
+                        <td>Hardware Health</td>
+                        <td id="t-motor">--</td>
+                        <td>°C</td>
+                        <td><span class="badge">Normal</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Battery Level</b></td>
+                        <td>Power System</td>
+                        <td><span id="t-battery">--</span>%</td>
+                        <td>5% – 100%</td>
+                        <td><span class="badge">Normal</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Wireless Signal</b></td>
+                        <td>Telecommunications</td>
+                        <td><span id="t-signal">--</span>%</td>
+                        <td>0% – 100%</td>
+                        <td><span class="badge">Connected</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>GPS Coordinates</b></td>
+                        <td>Navigation</td>
+                        <td><span id="t-lat">--</span>, <span id="t-lon">--</span></td>
+                        <td>Latitude / Longitude</td>
+                        <td><span class="badge">Locked</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer>TerraSync · Smart Agriculture · All telemetry is simulated</footer>
+    </main>
+</div>
+
+<script>
+    async function fetchSensorTableData() {
+        try {
+            const response = await fetch("/api/data", { cache: "no-store" });
+            if (!response.ok) return;
+            const d = await response.json();
+
+            document.getElementById("t-moisture").textContent = d.soil_moisture;
+            document.getElementById("t-ph").textContent = d.soil_ph;
+            document.getElementById("t-temp").textContent = d.soil_temp + " °C";
+            document.getElementById("t-nitrogen").textContent = d.nitrogen + " mg/kg";
+            document.getElementById("t-phosphorus").textContent = d.phosphorus + " mg/kg";
+            document.getElementById("t-potassium").textContent = d.potassium + " mg/kg";
+            document.getElementById("t-kws").textContent = d.kws_sensor + " ppm";
+            document.getElementById("t-nplk").textContent = d.nplk_sensor + " mg/L";
+            document.getElementById("t-speed").textContent = Number(d.speed).toFixed(2) + " m/s";
+            document.getElementById("t-motor").textContent = d.motor_temp + " °C";
+            document.getElementById("t-battery").textContent = Math.round(d.battery);
+            document.getElementById("t-signal").textContent = d.signal;
+            document.getElementById("t-lat").textContent = Number(d.gps.lat).toFixed(5);
+            document.getElementById("t-lon").textContent = Number(d.gps.lon).toFixed(5);
+            document.getElementById("t-status-badge").textContent = d.status;
+        } catch (error) {
+            console.error("Table telemetry update failed:", error);
+        }
+    }
+
+    fetchSensorTableData();
+    setInterval(fetchSensorTableData, 500);
+</script>
+</body>
+</html>

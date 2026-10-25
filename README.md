@@ -1,5 +1,5 @@
 # TerraSync
-
+### hosted at: https://terra-sync.onrender.com
 A runnable Flask dashboard for an agricultural quadruped soil-monitoring project. It uses **dummy data only**; no physical robot or sensors are connected.
 
 ## Requirements
